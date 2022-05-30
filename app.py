@@ -1,8 +1,6 @@
 
 import streamlit as st
 from keras.models import load_model
-# from streamlit import session_state
-# import av
 import cv2
 import numpy as np
 from time import sleep
