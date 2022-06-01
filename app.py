@@ -46,11 +46,11 @@ def face_detector(img):
 cap = cv2.VideoCapture(-1)
 
 
+try:
+    while True:
 
-while True:
+        ret, frame = cap.read()
 
-    ret, frame = cap.read()
-    try:
         rect, face, image = face_detector(frame)
     
 
@@ -67,9 +67,12 @@ while True:
             image=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
         else:
             cv2.putText(image, "No Face Found", (20, 60) , cv2.FONT_HERSHEY_SIMPLEX,2, (0,255,0), 3)
-    except:None
-        
+
     # cv2.imshow('All', image)
     FRAME_WINDOW.image(image)
+
+except:None
+        
+
 
 
