@@ -52,6 +52,7 @@ while True:
     ret, frame = cap.read()
     try:
         rect, face, image = face_detector(frame)
+        print(type(face))
         if face is None:
             continue;
     except:None
