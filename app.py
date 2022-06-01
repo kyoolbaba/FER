@@ -28,7 +28,8 @@ FRAME_WINDOW=st.image([])
 
 def face_detector(img):
     # Convert image to grayscale
-    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    convert_to_gray=cv2.COLOR_BGR2GRAY
+    gray = cv2.cvtColor(img,convert_to_gray)
     faces = face_classifier.detectMultiScale(gray, 1.3, 5)
     if faces is ():
         return (0,0,0,0), np.zeros((48,48), np.uint8), img
@@ -49,7 +50,9 @@ cap = cv2.VideoCapture(-1)
 while True:
 
     ret, frame = cap.read()
-    rect, face, image = face_detector(frame)
+    try:
+        rect, face, image = face_detector(frame)
+    except:None
     if np.sum([face]) != 0.0:
         roi = face.astype("float") / 255.0
         roi = img_to_array(roi)
