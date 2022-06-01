@@ -52,20 +52,22 @@ while True:
     ret, frame = cap.read()
     try:
         rect, face, image = face_detector(frame)
-    except:None
-    if np.sum([face]) != 0.0:
-        roi = face.astype("float") / 255.0
-        roi = img_to_array(roi)
-        roi = np.expand_dims(roi, axis=0)
+    
 
-        # make a prediction on the ROI, then lookup the class
-        preds = classifier.predict(roi)[0]
-        label = class_labels[preds.argmax()]  
-        label_position = (rect[0] + int((rect[1]/2)), rect[2] + 25)
-        cv2.putText(image, label, label_position , cv2.FONT_HERSHEY_SIMPLEX,2, (0,255,0), 3)
-        image=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
-    else:
-        cv2.putText(image, "No Face Found", (20, 60) , cv2.FONT_HERSHEY_SIMPLEX,2, (0,255,0), 3)
+        if np.sum([face]) != 0.0:
+            roi = face.astype("float") / 255.0
+            roi = img_to_array(roi)
+            roi = np.expand_dims(roi, axis=0)
+
+            # make a prediction on the ROI, then lookup the class
+            preds = classifier.predict(roi)[0]
+            label = class_labels[preds.argmax()]  
+            label_position = (rect[0] + int((rect[1]/2)), rect[2] + 25)
+            cv2.putText(image, label, label_position , cv2.FONT_HERSHEY_SIMPLEX,2, (0,255,0), 3)
+            image=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
+        else:
+            cv2.putText(image, "No Face Found", (20, 60) , cv2.FONT_HERSHEY_SIMPLEX,2, (0,255,0), 3)
+    except:None
         
     # cv2.imshow('All', image)
     FRAME_WINDOW.image(image)
