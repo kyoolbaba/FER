@@ -52,7 +52,6 @@ while True:
     ret, frame = cap.read()
     try:
         rect, face, image = face_detector(frame)
-        print(type(face))
         if np.sum([face]) != 0.0:
             roi = face.astype("float") / 255.0
             roi = img_to_array(roi)
