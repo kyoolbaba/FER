@@ -43,7 +43,7 @@ def face_detector(img):
         return (x,w,y,h), np.zeros((48,48), np.uint8), img
     return (x,w,y,h), roi_gray, img
 
-cap = cv2.VideoCapture(-1)
+cap = cv2.VideoCapture(0)
 
 
 try:
