@@ -43,7 +43,7 @@ def face_detector(img):
         return (x,w,y,h), np.zeros((48,48), np.uint8), img
     return (x,w,y,h), roi_gray, img
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(-1)
 
 
 
@@ -52,6 +52,8 @@ while True:
     ret, frame = cap.read()
     try:
         rect, face, image = face_detector(frame)
+        if face is None:
+            continue;
     except:None
     if np.sum([face]) != 0.0:
         roi = face.astype("float") / 255.0
