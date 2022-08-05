@@ -1,2 +1,5 @@
-streamlit
-opencv-python
+keras==2.9.0
+numpy==1.22.4
+opencv-python-headless==4.5.5.64
+streamlit==1.9.2
+tensorflow-cpu==2.9.1

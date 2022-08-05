@@ -1,12 +1,11 @@
 
 import streamlit as st
 from keras.models import load_model
-# from streamlit import session_state
-# import av
 import cv2
 import numpy as np
 from time import sleep
-from tensorflow.keras.preprocessing.image import img_to_array
+from numpy import asarray as img_to_array
+
 
 
 
@@ -29,7 +28,8 @@ FRAME_WINDOW=st.image([])
 
 def face_detector(img):
     # Convert image to grayscale
-    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    convert_to_gray=cv2.COLOR_BGR2GRAY
+    gray = cv2.cvtColor(img,convert_to_gray)
     faces = face_classifier.detectMultiScale(gray, 1.3, 5)
     if faces is ():
         return (0,0,0,0), np.zeros((48,48), np.uint8), img
@@ -50,22 +50,23 @@ cap = cv2.VideoCapture(0)
 while True:
 
     ret, frame = cap.read()
-    rect, face, image = face_detector(frame)
-    if np.sum([face]) != 0.0:
-        roi = face.astype("float") / 255.0
-        roi = img_to_array(roi)
-        roi = np.expand_dims(roi, axis=0)
+    try:
+        rect, face, image = face_detector(frame)
+        if np.sum([face]) != 0.0:
+            roi = face.astype("float") / 255.0
+            roi = img_to_array(roi)
+            roi = np.expand_dims(roi, axis=0)
 
         # make a prediction on the ROI, then lookup the class
-        preds = classifier.predict(roi)[0]
-        label = class_labels[preds.argmax()]  
-        label_position = (rect[0] + int((rect[1]/2)), rect[2] + 25)
-        cv2.putText(image, label, label_position , cv2.FONT_HERSHEY_SIMPLEX,2, (0,255,0), 3)
-        image=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
-    else:
-        cv2.putText(image, "No Face Found", (20, 60) , cv2.FONT_HERSHEY_SIMPLEX,2, (0,255,0), 3)
-        
+            preds = classifier.predict(roi)[0]
+            label = class_labels[preds.argmax()]  
+            label_position = (rect[0] + int((rect[1]/2)), rect[2] + 25)
+            cv2.putText(image, label, label_position , cv2.FONT_HERSHEY_SIMPLEX,2, (0,255,0), 3)
+            image=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
+        else:
+            cv2.putText(image, "No Face Found", (20, 60) , cv2.FONT_HERSHEY_SIMPLEX,2, (0,255,0), 3)      
     # cv2.imshow('All', image)
-    FRAME_WINDOW.image(image)
+        FRAME_WINDOW.image(image)
+    except:continue;
 
 
